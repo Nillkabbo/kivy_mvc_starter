@@ -1,9 +1,8 @@
 import sqlite3
 
 class TaskModel:
-    def __init__(self, model_name):
-        self.model_name = model_name
-        self.conn = sqlite3.connect(f'{model_name}_tasks.db')
+    def __init__(self, db_name='tasks.db'):
+        self.conn = sqlite3.connect(db_name)
         self.create_table()
     
     def create_table(self):

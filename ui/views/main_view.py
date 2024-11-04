@@ -8,9 +8,10 @@ class MainView(BoxLayout):
     task_list = ObjectProperty(None)
     user_spinner = ObjectProperty(None)
     
-    def __init__(self, controller, **kwargs):
+    def __init__(self, task_controller, user_controller, **kwargs):
         super().__init__(**kwargs)
-        self.controller = controller
+        self.task_controller = task_controller
+        self.user_controller = user_controller
         self.model_name = 'Model1'  # Default model name
         self.user_id = 'User1'      # Default user id
         self.refresh_user_spinner()
@@ -19,16 +20,16 @@ class MainView(BoxLayout):
     def add_task(self, model_name, user_id):
         task_text = self.task_input.text.strip()
         if task_text:
-            self.controller.add_task(model_name, user_id, task_text)
+            self.task_controller.add_task(user_id, task_text)
             self.task_input.text = ''
             self.refresh_tasks(model_name, user_id)
     
     def refresh_tasks(self, model_name, user_id):
         self.task_list.clear_widgets()
-        tasks = self.controller.get_tasks(model_name, user_id)
+        tasks = self.task_controller.get_tasks(user_id)
         for task in tasks:
             self.task_list.add_widget(
-                TaskItemView(task, model_name, self.controller, lambda: self.refresh_tasks(model_name, user_id))
+                TaskItemView(task, model_name, self.task_controller, lambda: self.refresh_tasks(model_name, user_id))
             )
     
     def set_user(self, user):
@@ -36,7 +37,7 @@ class MainView(BoxLayout):
         self.refresh_tasks(self.model_name, self.user_id)
     
     def refresh_user_spinner(self):
-        users = self.controller.user_model.get_all_users()
+        users = self.user_controller.get_all_users()
         self.user_spinner.values = [user[1] for user in users]  # Assuming user[1] is the username
 
 class TaskItemView(BoxLayout):
@@ -66,5 +67,5 @@ class TaskItemView(BoxLayout):
         self.add_widget(delete_btn)
     
     def delete_task(self, instance):
-        self.controller.delete_task(self.model_name, self.task[0])  # Pass model_name and task_id
+        self.controller.delete_task(self.task[0])  # Pass task_id
         self.refresh_callback()

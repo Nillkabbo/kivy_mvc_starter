@@ -1,8 +1,8 @@
 import sqlite3
 
 class UserModel:
-    def __init__(self):
-        self.conn = sqlite3.connect('users.db')
+    def __init__(self, db_name='tasks.db'):
+        self.conn = sqlite3.connect(db_name)
         self.create_table()
     
     def create_table(self):

@@ -33,7 +33,7 @@ This application is a Kivy-based MVC (Model-View-Controller) starter template th
 
 1. **UserModel Class:**
    - Manages user data using SQLite.
-   - Connects to the `users.db` database and creates a `users` table if it doesn't exist.
+   - Connects to the `tasks.db` database and creates a `users` table if it doesn't exist.
 
 2. **Methods:**
    - `add_user`: Adds a new user to the database.
@@ -45,7 +45,7 @@ This application is a Kivy-based MVC (Model-View-Controller) starter template th
 
 1. **TaskModel Class:**
    - Manages task data using SQLite.
-   - Connects to a database specific to the model name (e.g., `Model1_tasks.db`) and creates a `tasks` table if it doesn't exist.
+   - Connects to the `tasks.db` database and creates a `tasks` table if it doesn't exist.
 
 2. **Methods:**
    - `add_task`: Adds a new task to the database.
@@ -53,24 +53,33 @@ This application is a Kivy-based MVC (Model-View-Controller) starter template th
    - `delete_task`: Deletes a task from the database based on task ID.
    - `__del__`: Closes the database connection when the instance is deleted.
 
-### Controller
+### Controllers
 
 #### [task_controller.py](file:///Users/md.rakibulhasan/Downloads/nmr_structured_mvc/controllers/task_controller.py)
 
 1. **TaskController Class:**
-   - Manages interactions between the models and the views.
+   - Manages interactions between the task model and the views.
 
 2. **Initialization:**
-   - Initializes an empty dictionary (`models`) to store `TaskModel` instances.
-   - Creates an instance of `UserModel`.
+   - Initializes the `TaskModel` instance.
 
 3. **Methods:**
-   - `add_model`: Adds a new `TaskModel` instance to the `models` dictionary.
-   - `add_task`: Adds a task to the specified model for a specific user.
-   - `get_tasks`: Retrieves tasks from the specified model for a specific user.
-   - `delete_task`: Deletes a task from the specified model.
+   - `add_task`: Adds a task to the task model for a specific user.
+   - `get_tasks`: Retrieves tasks from the task model for a specific user.
+   - `delete_task`: Deletes a task from the task model.
+
+#### [user_controller.py](file:///Users/md.rakibulhasan/Downloads/nmr_structured_mvc/controllers/user_controller.py)
+
+1. **UserController Class:**
+   - Manages interactions between the user model and the views.
+
+2. **Initialization:**
+   - Initializes the `UserModel` instance.
+
+3. **Methods:**
    - `add_user`: Adds a new user using the `UserModel`.
    - `get_user`: Retrieves a user using the `UserModel`.
+   - `get_all_users`: Retrieves all users using the `UserModel`.
 
 ### Views
 
@@ -86,7 +95,7 @@ This application is a Kivy-based MVC (Model-View-Controller) starter template th
    - `register_user`: Registers a new user and refreshes the user spinner in the `MainView`.
    - `login_user`: Logs in a user and switches to the `MainView`.
    - `refresh_user_spinner`: Refreshes the user spinner in the `MainView`.
-   - `get_all_usernames`: Retrieves all usernames from the `UserModel`.
+   - `get_all_usernames`: Retrieves all usernames from the `UserController`.
 
 #### [main_view.py](file:///Users/md.rakibulhasan/Downloads/nmr_structured_mvc/ui/views/main_view.py)
 
@@ -94,7 +103,7 @@ This application is a Kivy-based MVC (Model-View-Controller) starter template th
    - Manages task input and display.
 
 2. **Initialization:**
-   - Initializes the `controller`, `model_name`, and `user_id` attributes.
+   - Initializes the `task_controller`, `user_controller`, `model_name`, and `user_id` attributes.
    - Refreshes the user spinner and tasks.
 
 3. **Methods:**
@@ -131,7 +140,7 @@ This application is a Kivy-based MVC (Model-View-Controller) starter template th
 
 3. **Task Management:**
    - In the `MainView`, the user can select a model and user, add tasks, and view tasks.
-   - Tasks are managed by the `TaskController`, which interacts with the `TaskModel` and `UserModel`.
+   - Tasks are managed by the `TaskController`, which interacts with the `TaskModel`.
 
 4. **Dynamic Updates:**
    - The user spinner in the `MainView` is dynamically updated when a new user is registered.
@@ -147,7 +156,8 @@ This application is a Kivy-based MVC (Model-View-Controller) starter template th
      ```
      nmr_structured_mvc/
      ├── controllers/
-     │   └── task_controller.py
+     │   ├── task_controller.py
+     │   └── user_controller.py
      ├── models/
      │   ├── task_model.py
      │   └── user_model.py

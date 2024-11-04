@@ -41,5 +41,5 @@ class UserView(BoxLayout):
         main_view.refresh_user_spinner()
     
     def get_all_usernames(self):
-        users = self.controller.user_model.get_all_users()
+        users = self.controller.get_all_users()
         return [user[1] for user in users]  # Assuming user[1] is the username
