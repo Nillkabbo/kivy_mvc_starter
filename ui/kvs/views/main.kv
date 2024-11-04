@@ -1,0 +1,79 @@
+#:kivy 2.0.0
+
+<UserView>:
+    username_input: username_input
+    password_input: password_input
+    
+    BoxLayout:
+        orientation: 'vertical'
+        padding: 10
+        spacing: 10
+        
+        Label:
+            text: 'Username'
+        
+        TextInput:
+            id: username_input
+            multiline: False
+        
+        Label:
+            text: 'Password'
+        
+        TextInput:
+            id: password_input
+            multiline: False
+            password: True
+        
+        Button:
+            text: 'Register'
+            on_press: root.register_user()
+        
+        Button:
+            text: 'Login'
+            on_press: root.login_user()
+
+<MainView>:
+    task_input: task_input
+    task_list: task_list
+    user_spinner: user_spinner
+    
+    BoxLayout:
+        orientation: 'vertical'
+        padding: 10
+        spacing: 10
+        
+        BoxLayout:
+            size_hint_y: None
+            height: 40
+            spacing: 10
+            
+            Spinner:
+                id: model_spinner
+                text: 'Select Model'
+                values: ['Model1', 'Model2']  # Add your model names here
+                on_text: root.refresh_tasks(self.text, user_spinner.text)
+            
+            Spinner:
+                id: user_spinner
+                text: 'Select User'
+                values: []  # Initialize with an empty list
+                on_text: root.refresh_tasks(model_spinner.text, self.text)
+            
+            TextInput:
+                id: task_input
+                hint_text: 'Enter task'
+                multiline: False
+                
+            Button:
+                text: 'Add Task'
+                size_hint_x: None
+                width: 100
+                on_press: root.add_task(model_spinner.text, user_spinner.text)
+        
+        ScrollView:
+            GridLayout:
+                id: task_list
+                cols: 1
+                spacing: 5
+                size_hint_y: None
+                height: self.minimum_height
